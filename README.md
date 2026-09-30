@@ -1,19 +1,22 @@
 # Agent Skills
 
-Reusable agent skill instructions maintained in this repository. `repo-readme` creates concise, evidence-based GitHub READMEs and generates a deterministic stack-icon background from the target repository's primary technologies and optional verified color palette.
+Reusable agent skill instructions maintained in this repository.
 
 ## Available Skills
 
 | Skill | Description |
 | --- | --- |
-| [repo-readme](skills/repo-readme/SKILL.md) | Audits repository files and metadata, then creates or standardizes the root `README.md` without inventing unsupported project details. |
+| [repo-readme](skills/repo-readme/SKILL.md) | Creates a visual-first GitHub landing page with a generated stack background, useful badge row and evidence-based project details. |
+| [repo-docs](skills/repo-docs/SKILL.md) | Audits and normalizes documentation information architecture while preserving content, links and evidence. |
 
 ## Repository Structure
 
 ```text
 skills/
-└── repo-readme/
-    ├── SKILL.md
-    └── scripts/
-        └── generate_readme_background.py
+├── repo-readme/
+│   ├── SKILL.md
+│   └── scripts/
+│       └── generate_readme_background.py
+└── repo-docs/
+    └── SKILL.md
 ```

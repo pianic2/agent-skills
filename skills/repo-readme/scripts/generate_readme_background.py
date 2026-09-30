@@ -106,6 +106,15 @@ def finite_float(value: str) -> float:
     return parsed
 
 
+def one_line_text(value: str) -> str:
+    text = value.strip()
+    if not text:
+        raise argparse.ArgumentTypeError("must not be empty")
+    if "\n" in text or "\r" in text:
+        raise argparse.ArgumentTypeError("must be a single line")
+    return text
+
+
 def local_name(tag: str) -> str:
     return tag.rsplit("}", 1)[-1]
 
@@ -185,6 +194,8 @@ def svg_escape(value: str) -> str:
 def build_svg(
     icons: list[Icon],
     *,
+    title: str,
+    subtitle: str | None,
     width: int,
     height: int,
     angle: float,
@@ -206,6 +217,12 @@ def build_svg(
     pattern_height = (rows - 1) * tile + icon_size
     row_top = (height - pattern_height) / 2
     rotate = f"rotate({angle:g} {width / 2:g} {height / 2:g})"
+    title_size = min(76, height * 0.28, width / max(6, len(title) * 0.62))
+    title_size = max(16, title_size)
+    subtitle_size = min(22, height * 0.08, width / max(8, len(subtitle or "") * 0.58))
+    subtitle_size = max(13, subtitle_size)
+    title_y = height / 2 - (subtitle_size * 0.48 if subtitle else 0)
+    subtitle_y = height / 2 + title_size * 0.62
 
     definitions = []
     for index, icon in enumerate(icons):
@@ -239,7 +256,8 @@ def build_svg(
             )
 
     return f'''<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="{SVG_NS}" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="Technology stack background">
+<svg xmlns="{SVG_NS}" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{svg_escape(title + (': ' + subtitle if subtitle else ''))}">
+  <title>{svg_escape(title + (': ' + subtitle if subtitle else ''))}</title>
   <defs>
     <linearGradient id="background-wash" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="{svg_escape(accent_2)}" stop-opacity="0"/>
@@ -249,6 +267,11 @@ def build_svg(
       <stop offset="0%" stop-color="{svg_escape(accent)}" stop-opacity="0.16"/>
       <stop offset="100%" stop-color="{svg_escape(accent)}" stop-opacity="0"/>
     </radialGradient>
+    <radialGradient id="title-scrim" cx="50%" cy="50%" r="66%">
+      <stop offset="0%" stop-color="{svg_escape(background)}" stop-opacity="0.62"/>
+      <stop offset="58%" stop-color="{svg_escape(background)}" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="{svg_escape(background)}" stop-opacity="0"/>
+    </radialGradient>
     {''.join(definitions)}
   </defs>
   <rect width="100%" height="100%" fill="{svg_escape(background)}"/>
@@ -257,14 +280,22 @@ def build_svg(
   <g transform="{rotate}" opacity="{opacity:g}">
     {''.join(symbols)}
   </g>
+  <rect width="100%" height="100%" fill="url(#title-scrim)"/>
+  <text x="{width / 2:g}" y="{title_y:g}" text-anchor="middle" dominant-baseline="middle"
+        font-family="Arial, Helvetica, sans-serif" font-size="{title_size:g}" font-weight="700"
+        letter-spacing="1.2" fill="{svg_escape(foreground)}" stroke="{svg_escape(background)}"
+        stroke-width="1.5" paint-order="stroke">{svg_escape(title)}</text>
+  {f'<text x="{width / 2:g}" y="{subtitle_y:g}" text-anchor="middle" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="{subtitle_size:g}" font-weight="400" letter-spacing="0.25" fill="{svg_escape(foreground)}" stroke="{svg_escape(background)}" stroke-width="0.8" paint-order="stroke">{svg_escape(subtitle)}</text>' if subtitle else ''}
 </svg>
 '''
 
 
 def make_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Download Simple Icons and generate a self-contained README background SVG."
+        description="Download Simple Icons and generate a self-contained titled README background SVG."
     )
+    parser.add_argument("--title", required=True, type=one_line_text, help="Evidence-based project name shown over the stack pattern")
+    parser.add_argument("--subtitle", type=one_line_text, help="Optional short, evidence-based one-line description")
     parser.add_argument("--stack", required=True, help="Comma-separated primary technology names")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT, help=f"SVG output path (default: {DEFAULT_OUTPUT})")
     parser.add_argument("--background", type=parse_color, default="#17202b", help="Background color")
@@ -289,6 +320,8 @@ def main() -> int:
         icons = resolve_icons(args.stack, args.strict)
         output = build_svg(
             icons,
+            title=args.title,
+            subtitle=args.subtitle,
             width=args.width,
             height=args.height,
             angle=args.angle,
