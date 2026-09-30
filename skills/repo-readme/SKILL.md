@@ -1,312 +1,691 @@
 ---
 name: repo-readme
-description: Create or standardize a repository README.md using a consistent, professional structure derived from evidence in the repository. Use when creating, rewriting, refreshing, normalizing, or improving a GitHub repository README. Inspect the repository before writing and never invent project capabilities, commands, versions, deployment targets, CI status, or configuration.
+description: Create or standardize a repository README.md with a visual-first, concise and consistent GitHub presentation. Use when creating, rewriting, refreshing or improving a repository README. Inspect the repository first and derive all technical claims from evidence. Prefer images, badges, icons, tables and commands over long explanatory prose.
 ---
 
 # Repository README
 
-Create or update the root `README.md` so repositories share a consistent, professional documentation style while preserving project-specific information.
+Create or update the root `README.md` using a consistent visual-first documentation style.
 
-## Source of truth
+The README must be:
 
-Derive the README from the repository itself.
+- visually recognizable;
+- concise;
+- easy to scan;
+- evidence-based;
+- useful to developers;
+- consistent across repositories.
 
-Before writing, inspect the relevant available sources, including:
+Prefer visual hierarchy over long prose.
 
-- existing `README.md`;
-- package/project manifests;
+## Core principle
+
+A reader opening the repository should understand within a few seconds:
+
+1. what the project is;
+2. what technology it uses;
+3. whether CI/release status exists;
+4. how to run it;
+5. where to find deeper documentation.
+
+Avoid walls of text.
+
+---
+
+# 1. Inspect before writing
+
+Before editing `README.md`, inspect relevant repository evidence:
+
+- current `README.md`;
+- project manifests;
 - dependency and lock files;
 - source tree;
-- build configuration;
 - test configuration;
 - CI workflows;
 - deployment configuration;
-- environment examples;
 - Docker files;
+- `.env.example`;
 - API specifications;
-- repository documentation;
-- Git remote metadata when available.
+- documentation directories;
+- repository assets;
+- license;
+- Git metadata when available.
 
-Do not infer unsupported capabilities.
+Never invent:
 
-Do not claim that tests, CI, deployments, releases, platforms, integrations, or features exist unless repository evidence supports the claim.
+- features;
+- versions;
+- CI status;
+- deployments;
+- commands;
+- integrations;
+- coverage;
+- release status;
+- architecture;
+- URLs.
 
-Prefer exact executable commands already defined by the project.
+Preserve useful existing information unless it is obsolete, duplicated or contradicted by repository evidence.
 
-## Preserve information
+---
 
-When an existing README contains useful project-specific information, retain it unless it is obsolete, duplicated, incorrect, or contradicted by the repository.
+# 2. Visual-first header
 
-Standardize the presentation rather than deleting valuable documentation.
+Every README should begin with a strong visual element.
 
-Do not overwrite intentionally maintained legal, security, attribution, citation, academic, licensing, or contributor information.
+Preferred order:
 
-## README structure
+```text
+HERO / PROJECT IMAGE
 
-Use the following order when the corresponding information exists:
+PROJECT NAME
 
-1. Project heading
-2. Short project description
-3. Badges
-4. Overview
-5. Features
-6. Tech Stack
-7. Architecture
-8. Getting Started
-9. Configuration
-10. Development Commands
-11. Testing and Quality
-12. Project Structure
-13. API or Interfaces
-14. Deployment
-15. Contributing
-16. License
+short tagline
 
-Do not create empty or speculative sections.
+badges
 
-Small repositories may omit sections that add no useful information.
+technology icons
+```
 
-## Heading
+Do not begin with multiple paragraphs.
 
-Start with:
+## Hero image
+
+Prefer, in order:
+
+1. existing project logo;
+2. existing product screenshot;
+3. existing repository artwork;
+4. a dedicated README hero image.
+
+Preferred repository location:
+
+```text
+docs/assets/readme-hero.svg
+```
+
+or, if an assets structure already exists, use that existing convention.
+
+Recommended visual width:
+
+```text
+800–1200 px
+```
+
+Render it centered:
+
+```html
+<p align="center">
+  <img src="docs/assets/readme-hero.svg"
+       alt="Project name"
+       width="900" />
+</p>
+```
+
+Use a meaningful `alt`.
+
+### When no suitable image exists
+
+If the environment allows creation of repository assets, create a lightweight SVG hero.
+
+The hero should contain only:
+
+- project name;
+- optional short tagline;
+- simple geometric or technical visual elements.
+
+Do not create fake product screenshots.
+
+Do not use unrelated stock images.
+
+Do not hotlink random images from the internet.
+
+Keep generated visual assets simple and maintainable.
+
+---
+
+# 3. Project identity
+
+Immediately after the hero:
 
 ```md
 # Project Name
 
-Short, concrete description of what the project does and who or what it is for.
+Short description of the project in one sentence.
 ```
 
-The description should normally be one or two sentences.
+The description should normally be **one sentence**.
 
-Do not use marketing language unless the repository already establishes it.
+Maximum preferred length:
 
-## Badges
+```text
+~160 characters
+```
 
-Keep badges useful and restrained.
+Do not add generic marketing copy.
 
-Include a badge only when its target can be verified from the repository.
+Bad:
 
-Good candidates include:
+```text
+This innovative and revolutionary application provides a robust,
+modern, scalable and cutting-edge ecosystem designed to...
+```
 
-- CI workflow;
+Good:
+
+```text
+Django portfolio backend with Wagtail-managed content and a JSON API for the React frontend.
+```
+
+---
+
+# 4. Badges
+
+Place badges directly below the description.
+
+Prefer Shields.io or authoritative provider badges.
+
+Recommended categories:
+
+- CI;
 - release/version;
 - license;
-- runtime or framework version when authoritative;
-- package publication when the package actually exists.
+- coverage;
+- package publication;
+- runtime/framework version;
+- deployment status when authoritative.
 
-Do not add decorative badge walls.
+Example:
 
-Do not create badges for technologies merely because they are dependencies.
-
-Prefer no badges over inaccurate badges.
-
-## Overview
-
-Explain:
-
-- what the project is;
-- the main problem it solves;
-- its principal runtime or execution model;
-- any essential architectural context.
-
-Keep this section compact.
-
-## Features
-
-Include only meaningful user-facing or developer-facing capabilities confirmed by the repository.
-
-Use short bullets.
-
-Do not convert implementation details into fake product features.
-
-## Tech Stack
-
-Use a compact Markdown table when useful:
-
-```md
-| Area | Technology |
-| --- | --- |
-| Backend | ... |
-| Frontend | ... |
-| Database | ... |
-| Testing | ... |
-| Deployment | ... |
+```html
+<p align="left">
+  <img src="..." alt="CI" />
+  <img src="..." alt="Python" />
+  <img src="..." alt="License" />
+</p>
 ```
 
-Include only relevant areas.
+or standard Markdown badge syntax.
 
-Prefer exact framework/runtime versions when they are explicitly pinned or otherwise authoritative.
+## Badge rules
 
-## Architecture
+Use only badges whose values can be verified.
 
-Describe the high-level system structure rather than every file.
+Prefer approximately:
 
-For a monorepo or multi-component project, identify major components and their responsibilities.
+```text
+2–6 badges
+```
 
-Use Mermaid only when it materially improves understanding and when GitHub-compatible Mermaid is sufficient.
+Avoid badge walls.
 
-Do not create architectural relationships unsupported by the codebase.
+Badges should communicate **project status**, not duplicate the entire tech stack.
 
-## Getting Started
+Prefer a single consistent badge style within the README.
 
-Make the shortest reliable path from clone to running development environment.
+Recommended style:
+
+```text
+flat-square
+```
+
+or:
+
+```text
+for-the-badge
+```
+
+Do not mix multiple visual styles without a reason.
+
+---
+
+# 5. Technology icons
+
+After badges, show the primary stack visually when useful.
+
+Skill Icons may be used:
+
+```html
+<p>
+  <img src="https://skillicons.dev/icons?i=python,django,postgres,docker" alt="Technology stack" />
+</p>
+```
+
+Only include technologies confirmed by repository evidence.
+
+Show only primary technologies.
 
 Prefer:
 
-```md
-## Getting Started
-
-### Prerequisites
-
-...
-
-### Installation
-
-```bash
-...
+```text
+3–8 icons
 ```
 
-### Run
+Do not turn dependency lists into icon walls.
 
-```bash
-...
-```
-```
+Minor libraries belong in documentation, not in the visual header.
 
-Use the package manager and tooling selected by the repository.
+When a technology is unsupported by the selected icon provider, omit it rather than using inconsistent arbitrary images.
 
-Do not silently substitute npm for pnpm, pip for uv, Maven for Gradle, or equivalent tooling.
+---
 
-## Configuration
+# 6. Optional visual preview
 
-Document environment variables only when they can be identified reliably.
+For applications with a meaningful UI, CLI output, hardware result or generated artifact, place one representative image after the header.
 
-Never place real credentials, secrets, tokens, passwords, private URLs, or private keys in the README.
-
-Prefer referencing an existing `.env.example` when available.
-
-Clearly distinguish required and optional configuration when the repository provides enough evidence.
-
-## Development Commands
-
-If the repository exposes several useful commands, provide a compact table:
+Examples:
 
 ```md
+![Application preview](docs/assets/preview.png)
+```
+
+Suitable content includes:
+
+- application screenshot;
+- CLI output;
+- architecture visualization;
+- hardware photo;
+- generated result;
+- product interface.
+
+One strong image is preferable to several weak ones.
+
+Do not add screenshots merely for decoration.
+
+---
+
+# 7. README information architecture
+
+Use only sections justified by repository evidence.
+
+Preferred order:
+
+1. visual header;
+2. project identity;
+3. badges;
+4. stack icons;
+5. optional preview;
+6. Overview;
+7. Quick Start;
+8. Architecture;
+9. Development;
+10. Testing;
+11. API or Interfaces;
+12. Deployment;
+13. Project Structure;
+14. Contributing;
+15. License.
+
+Small projects should use fewer sections.
+
+Never create empty sections.
+
+---
+
+# 8. Overview
+
+Keep the Overview extremely compact.
+
+Preferred length:
+
+```text
+1–3 short paragraphs
+```
+
+or approximately:
+
+```text
+50–120 words
+```
+
+Explain only:
+
+- what the project does;
+- its principal execution model;
+- important context not obvious from the header.
+
+Prefer bullets when they communicate the same information more clearly.
+
+---
+
+# 9. Quick Start
+
+Quick Start is one of the most important sections.
+
+Prefer executable commands over explanation.
+
+Example:
+
+```md
+## 🚀 Quick Start
+
+```bash
+git clone ...
+cd ...
+uv sync
+uv run ...
+```
+```
+
+Use the tooling selected by the repository.
+
+Do not silently replace:
+
+- `pnpm` with `npm`;
+- `uv` with `pip`;
+- Gradle with Maven;
+- project scripts with generic commands.
+
+Commands must be supported by repository evidence.
+
+---
+
+# 10. Section icons
+
+Use one relevant icon or emoji in major headings to improve scanning.
+
+Example:
+
+```md
+## 🚀 Quick Start
+
+## 🧱 Architecture
+
+## 🛠️ Development
+
+## 🧪 Testing
+
+## 🔌 API
+
+## 🚢 Deployment
+
+## 📁 Project Structure
+
+## 🤝 Contributing
+
+## 📄 License
+```
+
+Use a consistent icon vocabulary across repositories.
+
+Do not place emojis throughout normal prose.
+
+Icons are navigation aids, not decoration.
+
+---
+
+# 11. Architecture
+
+Prefer diagrams and concise component descriptions over long architecture essays.
+
+For suitable projects use GitHub-compatible Mermaid:
+
+```mermaid
+flowchart LR
+    Client --> API
+    API --> Database
+```
+
+Only include relationships supported by repository evidence.
+
+For simple projects, omit the diagram.
+
+A compact table is also acceptable:
+
+```md
+| Component | Responsibility |
+| --- | --- |
+| `backend/` | API and business logic |
+| `frontend/` | User interface |
+```
+
+---
+
+# 12. Tech Stack details
+
+Do not create a large prose section describing obvious technologies already represented by icons.
+
+When additional context is useful, use a small table:
+
+```md
+| Layer | Technology |
+| --- | --- |
+| Backend | Django |
+| Database | PostgreSQL |
+| Mobile | React Native / Expo |
+| CI | GitHub Actions |
+```
+
+Use exact versions only when authoritative.
+
+---
+
+# 13. Development commands
+
+Prefer a command table:
+
+```md
+## 🛠️ Development
+
 | Command | Purpose |
 | --- | --- |
-| `...` | ... |
+| `uv sync` | Install dependencies |
+| `uv run pytest` | Run tests |
+| `uv run ruff check .` | Run linting |
 ```
 
-Commands must correspond to real scripts, Make targets, task runner commands, or documented tooling.
+Every command must exist or be directly supported by project configuration.
 
-## Testing and Quality
+---
 
-Document actual test, lint, formatting, type-checking, coverage, validation, or quality commands.
+# 14. Testing and quality
 
-Do not claim that a quality gate passes merely because it exists.
+Keep this section operational.
 
-A passing-status statement requires current execution evidence or an authoritative repository status.
+Example:
 
-## Project Structure
+```md
+## 🧪 Testing
 
-Show only the directories necessary to understand the project.
+```bash
+uv run pytest
+uv run ruff check .
+```
+```
+
+Use badges for current CI/coverage status when authoritative.
+
+Do not state that tests pass unless current evidence supports that claim.
+
+---
+
+# 15. Project structure
+
+Show only important paths.
 
 Example:
 
 ```text
 .
-├── apps/
-├── packages/
-├── docs/
-└── ...
+├── apps/       # Applications
+├── packages/   # Shared packages
+├── docs/       # Documentation
+└── tests/      # Automated tests
 ```
 
-Do not dump the complete repository tree.
+Prefer approximately:
 
-Add short inline descriptions only when useful.
+```text
+4–10 entries
+```
 
-## API or Interfaces
+Do not dump the full repository tree.
 
-Document the canonical API specification, generated documentation, MCP interface, CLI, package API, mobile deep links, or other public interfaces when applicable.
+---
 
-Link to existing detailed documentation instead of duplicating large specifications.
+# 16. Configuration
 
-## Deployment
+Document configuration only when necessary.
 
-Describe deployment only when deployment configuration or authoritative documentation exists.
+Prefer:
 
-Identify the deployment mechanism and the commands or workflow required.
+```md
+cp .env.example .env
+```
 
-Do not expose sensitive infrastructure information.
+and a small table for important variables.
 
-## Contributing
+Never expose:
 
-Keep contributing instructions short unless the repository has an established contribution process.
+- passwords;
+- API keys;
+- tokens;
+- private keys;
+- credentials;
+- secrets.
 
-Link to `CONTRIBUTING.md` when present rather than duplicating it.
+---
 
-## License
+# 17. API and interfaces
 
-Determine the license from the repository.
+If the repository exposes a public interface, document its entry point concisely.
 
-Link to the actual license file when present.
+Examples:
 
-Do not assume MIT or another license.
+- OpenAPI;
+- REST API;
+- MCP;
+- CLI;
+- package API;
+- deep links.
 
-If no license exists, omit the section unless the user explicitly asks to document the absence of a license.
+Prefer links to canonical detailed documentation instead of duplicating it.
 
-## Style
+---
 
-Optimize for GitHub rendering.
+# 18. Deployment
 
-Use:
+Include deployment information only when supported by repository configuration or authoritative documentation.
 
-- concise paragraphs;
-- descriptive headings;
-- short lists;
-- fenced code blocks with language identifiers;
-- relative repository links where practical;
-- tables only for genuinely tabular information;
-- one blank line between logical Markdown blocks.
+Prefer commands, links and workflow names over long explanations.
+
+Do not expose sensitive infrastructure details.
+
+---
+
+# 19. Table of contents
+
+Do **not** automatically create a table of contents.
+
+Add one only when the README is sufficiently long that navigation materially improves usability.
+
+For short or medium README files, headings are sufficient.
+
+---
+
+# 20. Writing style
+
+Optimize for scanning.
+
+Prefer:
+
+- short sentences;
+- short paragraphs;
+- code blocks;
+- images;
+- badges;
+- icons;
+- concise tables;
+- diagrams;
+- links to deeper documentation.
 
 Avoid:
 
-- excessive emoji;
-- decorative Unicode;
-- unnecessary HTML;
-- excessive centered content;
-- huge badge collections;
-- repeated information;
+- paragraphs longer than roughly 5 lines;
+- repeated explanations;
 - generic boilerplate;
-- fake roadmap items;
-- promotional filler.
+- marketing filler;
+- obvious implementation commentary;
+- decorative complexity;
+- excessive HTML;
+- excessive emoji;
+- giant tables.
 
-The result should look deliberately designed while remaining easy to maintain as plain Markdown.
+A README should feel like a polished project landing page, not a specification document.
 
-## Consistency
+Detailed documentation belongs under:
 
-When this skill is used across multiple repositories, preserve the same:
+```text
+docs/
+```
 
-- section naming;
-- section ordering;
-- Markdown conventions;
-- badge philosophy;
-- command presentation;
-- technical tone.
+or equivalent project documentation.
 
-Project-specific content may differ, but the documentation system should remain recognizable.
+---
 
-## Validation
+# 21. Progressive disclosure
+
+Apply this principle:
+
+```text
+README
+    ↓
+understand project
+    ↓
+run project
+    ↓
+find deeper docs
+```
+
+The README is the entry point.
+
+It does not need to contain every project detail.
+
+When detailed documentation already exists, link to it.
+
+---
+
+# 22. Consistency across repositories
+
+Repositories using this skill should share recognizable presentation conventions:
+
+- hero at the top;
+- concise project description;
+- compact badge row;
+- primary technology icons;
+- consistent heading icons;
+- Quick Start near the top;
+- commands over prose;
+- restrained section count;
+- detailed documentation linked instead of duplicated.
+
+Project content may vary.
+
+Visual language should remain consistent.
+
+---
+
+# 23. Validation
 
 Before finishing:
 
-1. compare every significant claim against repository evidence;
+1. verify every factual claim against repository evidence;
 2. verify commands against project configuration;
-3. verify referenced relative paths exist;
-4. verify links that can be checked locally;
-5. remove empty sections;
-6. remove unsupported claims;
-7. ensure Markdown structure is valid;
-8. review the diff when modifying an existing README.
+3. verify referenced local files exist;
+4. verify image paths;
+5. verify badge targets;
+6. verify technology icons represent technologies actually used;
+7. remove empty sections;
+8. remove redundant prose;
+9. remove unsupported claims;
+10. inspect the final README as a GitHub landing page;
+11. review the diff.
 
-The final README must describe the repository that actually exists, not the repository the author may eventually want to build.
+Ask:
+
+> Can a developer understand the project and reach the Quick Start without reading a wall of text?
+
+If not, simplify the README.
+
+The finished README should prioritize:
+
+**visual identity → project understanding → execution → deeper documentation.**
