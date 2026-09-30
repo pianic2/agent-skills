@@ -5,57 +5,74 @@ description: Use when creating, rewriting or improving a GitHub repository READM
 
 # Repository README
 
-Create or improve the root `README.md` as a concise GitHub landing page. Inspect the repository before writing and derive every technical claim from evidence.
+Create or improve the target repository's root `README.md` as a concise GitHub landing page. Inspect the repository first and derive every technical claim and visual choice from evidence.
 
 ## Evidence first
 
 Inspect the existing README, manifests and lockfiles, source tree, scripts, tests, CI workflows, deployment configuration, API specifications, docs, assets, license and relevant Git metadata. Preserve useful existing information unless evidence shows it is obsolete or incorrect.
 
-Never invent features, versions, commands, integrations, CI or release status, deployments, coverage, architecture, URLs or support claims. Verify commands against project configuration, badges against authoritative sources, and every linked file or image against the repository. Omit anything that cannot be verified; do not imply tests pass or a service is deployed without current evidence.
+Never invent features, versions, commands, integrations, CI or release status, deployments, coverage, architecture, URLs, project colors or support claims. Verify commands against project configuration, badges against authoritative sources, and every linked file or image against the repository. Omit anything that cannot be verified; do not imply tests pass or a service is deployed without current evidence.
 
-## Visual identity
+## Generated stack background
 
-Start with a hero image, followed by the project name, a one-line description, compact status badges and primary technology icons. Keep introductory text minimal and put Quick Start near the top.
-
-When creating visual assets, use:
+Use the bundled deterministic generator for the README's opening visual. The agent discovers evidence; the script draws the background:
 
 ```text
-docs/assets/
-├── logo.svg
-└── readme-hero.svg
+AGENT: inspect target repository → identify primary stack and any real palette
+SCRIPT: download Simple Icons → generate self-contained SVG background
 ```
 
-`logo.svg` is the reusable project identity mark for use outside the README. Keep it distinct from `readme-hero.svg`, a wide composition made for the README. The logo expresses the project's identity; it is not an architecture or process diagram. The hero may incorporate the logo, but must not be the only form of the identity.
+Do not invent or manually draw an equivalent SVG, icon pattern or background. Change colors, density, angle, spacing or size by rerunning the script with different options.
 
-Give the hero one dominant idea, a strong composition and generous negative space. Use a reduced, coherent palette and deliberate typography; do not default to monospace. Prefer abstract, geometric or editorial symbols with a clear silhouette that remain recognizable at small sizes.
+### Discover the stack
 
-Avoid boxes with arrows, pipeline stages, terminals, database cylinders, robots, code brackets and generic AI branding. Keep technical architecture out of the hero and explain it later with a concise diagram, table or text when evidence supports it.
+Identify about 3–8 primary technologies from manifests, lockfiles, framework configuration, source tree, Docker or infrastructure configuration, and authoritative project docs. Choose the technologies that define the application and runtime. Do not count transitive dependencies, minor utilities or tools merely to fill the pattern. Pass their comma-separated names with `--stack`, using supported aliases such as `python,django,postgresql,docker`, `java,springboot,postgresql,docker`, `typescript,react,expo,nodejs` or `php,laravel,mysql,docker`.
 
-Use a consistent visual language across assets. Keep SVGs lightweight and readable. Verify that local asset paths exist and that images still work at README display size.
+### Discover the palette
 
-## Header elements
+Before generation, inspect CSS variables, design tokens, Tailwind or theme config, component libraries, brand assets, an existing authoritative logo, design-system documentation and other authoritative visual assets. Resolve and pass each verifiable value using `--background`, `--foreground`, `--accent` and `--accent-2`. Do not guess missing colors; omitted options use the script's deterministic fallback values. If no real palette is available, omit all four options.
 
-### Badges
+### Generate the asset
 
-Use a small, consistent set of compact badges (typically 2–6) for verifiable project status, such as CI, release, license or coverage. Prefer authoritative providers. Badges describe status; they are not a second technology list. Omit unavailable or unverified status.
+Run the bundled standard-library script from the target repository root. The default output is `docs/assets/readme-background.svg`:
 
-### Technology icons
+```bash
+python3 /path/to/repo-readme/scripts/generate_readme_background.py \
+  --stack python,django,postgresql,docker \
+  --output docs/assets/readme-background.svg
+```
 
-Show only a few primary technologies confirmed by repository evidence. Keep these icons visually separate from status badges and omit unsupported or unavailable icons. Do not turn transitive dependencies into an icon wall.
+Pass the discovered palette only when evidence supports it. The script downloads SVG paths from Simple Icons, embeds them in the generated SVG and lays them out deterministically. A missing icon warns and is skipped; `--strict` makes any missing alias or icon fatal. If no icon is available, generation fails without writing a background. Never leave external icon URLs in the generated file.
 
-### Optional preview
+Supported aliases include `python`, `django`, `postgres`, `postgresql`, `java`, `spring`, `springboot`, `spring-boot`, `react`, `react-native`, `expo`, `typescript`, `javascript`, `node`, `nodejs`, `docker`, `php`, `laravel`, `mysql`, `redis`, `vite`, `wagtail` and `github-actions`. See `scripts/generate_readme_background.py` for accepted options and defaults.
 
-After the header, include one representative screenshot or output only when the project has a meaningful visual result and the asset is available. Do not add decorative or fabricated previews.
+The background is a decorative field of real stack icons: a full or softly graded color field, optional subtle glow, several staggered rows, repeated icons, low opacity and a diagonal rotation. Keep it legible and restrained. It contains icons only: no technology labels, boxes, arrows, pipelines, architecture diagrams, terminals, database cylinders, robots or generic AI motifs. Architecture belongs later in the README.
 
-## README structure
+Do not automatically create `logo.svg` or another logo. Reuse an existing authoritative logo when useful. Create a new logo only when the user explicitly requests one; a generated stack background and clean text title are sufficient.
 
-Follow this order, omitting sections that lack evidence or value for the project:
+## README header and structure
 
-1. Hero image
+Start the README with the generated background using this markup, updating the path only if a different output was intentionally selected:
+
+```html
+<p align="center">
+  <img
+    src="docs/assets/readme-background.svg"
+    alt="Technology stack background"
+    width="100%"
+  />
+</p>
+```
+
+Follow it with the project name, one-line evidence-based description, compact status badges, an optional separate technology icon row, and an optional meaningful preview. The separate icon row is optional because the background already communicates the stack. Keep introductory prose minimal and place Quick Start immediately after the optional preview.
+
+Use this order, omitting sections without evidence or value:
+
+1. Generated background
 2. Project name
 3. One-line description
-4. Badges
-5. Technology icons
+4. Status badges
+5. Optional technology icon row
 6. Optional visual preview
 7. Quick Start
 8. Architecture
@@ -67,40 +84,26 @@ Follow this order, omitting sections that lack evidence or value for the project
 14. Contributing
 15. License
 
-Use concise, scannable headings and a consistent set of heading icons where appropriate. Do not add an Overview or other filler section to repeat the one-line description. Omit empty sections.
+Use compact, consistent badges for verifiable status only; they are not a second technology list. Any separate technology icons must represent primary technologies confirmed by repository evidence. Include one available, representative preview only when the project has a meaningful visual result. Do not add an Overview or filler section that repeats the one-line description, and do not leave empty sections.
 
-### Quick Start
+### Concise technical sections
 
-Place Quick Start close to the top, immediately after the optional preview when present. Prefer the fewest verified commands that get a developer running. Use the repository's actual tooling and scripts; never substitute familiar commands for project-specific ones.
+- **Quick Start:** Put the fewest verified commands near the top. Use the repository's actual tooling and scripts.
+- **Architecture:** Keep it out of the background. Prefer a concise Mermaid diagram, image or table over prose when it clarifies real structure; omit it for simple projects.
+- **Development and Testing:** Use short command tables or code blocks for verified setup, development, lint and test commands. Do not claim checks pass unless run with current results.
+- **API / Interfaces and Deployment:** Include only interfaces and deployment evidenced by source, configuration or authoritative docs.
+- **Project Structure:** Show only important paths, not the full tree.
+- **Contributing and License:** Include only when guidance or a license exists and can be linked or summarized accurately.
 
-### Architecture
-
-Keep architecture out of the hero. Prefer a compact Mermaid diagram, image or table over prose when it clarifies real repository structure. Include only verified components and relationships; omit the section for simple projects where it adds little.
-
-### Development and testing
-
-Use short command tables or code blocks for verified setup, development, lint and test commands. Do not claim a check passes unless it has been run and its result is current.
-
-### API, deployment and project structure
-
-Document public interfaces and deployment only when evidenced by source, configuration or authoritative project documentation. Show only the important project paths, not a full tree. Link to canonical docs rather than duplicating detail.
-
-### Contributing and license
-
-Include these sections only when contribution guidance or a license is present and can be linked or summarized accurately.
-
-## Concision and progressive disclosure
-
-Favor images, concise tables, Mermaid diagrams, links and executable commands over long paragraphs. Remove marketing filler, repeated explanations, giant tables, excessive emoji and decorative markup. Keep the README focused on understanding the project, running it and finding deeper documentation. Put extended guides under `docs/` (or the repository's established documentation location) and link to them.
-
-Do not add a table of contents automatically; use one only when a long README needs it for navigation.
+Favor images, concise tables, Mermaid, links and commands over long paragraphs. Link to deeper documentation instead of duplicating it; put extended guides under `docs/` or the repository's established documentation location. Add a table of contents only when a long README needs one.
 
 ## Final review
 
-Before finishing, check that:
+Before finishing, verify that:
 
-- all claims, commands, versions, badges and diagrams are supported by evidence;
-- `logo.svg` and `readme-hero.svg` have distinct, appropriate roles and verified paths;
-- images and links resolve, and the hero reads clearly at small sizes;
-- the section order follows the structure above, with unsupported sections omitted;
-- Quick Start is easy to reach and the README contains no repeated or unnecessary prose.
+- claims, commands, versions, badges, palette values and diagrams are supported by evidence;
+- the background was generated by the script, is self-contained and has a valid repository-relative image path;
+- status badges are verifiable, and optional technology icons reflect actual primary technologies;
+- every referenced file and image exists and links resolve;
+- the README follows the section order, omits unsupported sections and keeps Quick Start easy to reach;
+- repeated, verbose or marketing prose has been removed.

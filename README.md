@@ -1,6 +1,6 @@
 # Agent Skills
 
-Reusable agent skill instructions maintained in this repository. The current skill helps create or update a repository README using evidence from that repository.
+Reusable agent skill instructions maintained in this repository. `repo-readme` creates concise, evidence-based GitHub READMEs and generates a deterministic stack-icon background from the target repository's primary technologies and optional verified color palette.
 
 ## Available Skills
 
@@ -13,5 +13,7 @@ Reusable agent skill instructions maintained in this repository. The current ski
 ```text
 skills/
 └── repo-readme/
-    └── SKILL.md
+    ├── SKILL.md
+    └── scripts/
+        └── generate_readme_background.py
 ```
