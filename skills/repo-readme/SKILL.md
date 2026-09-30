@@ -88,58 +88,191 @@ technology icons
 
 Do not begin with multiple paragraphs.
 
-## Hero image
+## Hero and visual identity
 
-Prefer, in order:
+The README header must feel like a designed project identity, not an automatically generated technical diagram.
 
-1. existing project logo;
-2. existing product screenshot;
-3. existing repository artwork;
-4. a dedicated README hero image.
+The hero is a visual branding surface.
 
-Preferred repository location:
+### Visual hierarchy
 
-```text
-docs/assets/readme-hero.svg
-```
-
-or, if an assets structure already exists, use that existing convention.
-
-Recommended visual width:
+Prefer this composition:
 
 ```text
-800–1200 px
+LOGO / SYMBOL
+
+PROJECT WORDMARK
+
+short tagline
+
+status badges
+
+technology icons
 ```
 
-Render it centered:
+The project should remain recognizable even if the explanatory text is removed.
 
-```html
-<p align="center">
-  <img src="docs/assets/readme-hero.svg"
-       alt="Project name"
-       width="900" />
-</p>
+### Logo design
+
+When no established project logo exists and creating repository assets is allowed, create an original lightweight SVG mark.
+
+The logo must be:
+
+- visually distinctive;
+- minimal;
+- geometric or editorial rather than illustrative;
+- recognizable at small sizes;
+- appropriate for both GitHub README presentation and future reuse;
+- related conceptually to the project without literally diagramming its architecture.
+
+Prefer abstract symbolism derived from the project's purpose.
+
+Examples:
+
+- publishing project → page, type, editorial grid, cursor, narrative flow;
+- evidence project → chain, fingerprint, verification mark, immutable sequence;
+- AI project → constellation, nodes, signal, abstraction;
+- infrastructure project → modular geometry, topology, connected forms;
+- mobile product → gesture, interaction, signal, relationship.
+
+Do not simply draw the application architecture.
+
+### Avoid generic AI-generated branding
+
+Do not create logos consisting primarily of:
+
+- boxes connected by arrows;
+- pipeline stages;
+- generic network-node diagrams;
+- terminal windows;
+- code brackets;
+- database cylinders;
+- cloud icons;
+- robot heads;
+- arbitrary gradients;
+- project initials placed inside a generic circle or hexagon.
+
+These may appear in technical diagrams, but they should not define the project's visual identity.
+
+### Composition
+
+Use a deliberate visual composition rather than filling the canvas.
+
+Prefer:
+
+- asymmetry when appropriate;
+- generous negative space;
+- one dominant visual idea;
+- strong silhouette;
+- restrained geometry;
+- coherent alignment.
+
+Do not fill every area of the hero.
+
+### Color system
+
+Use a small palette:
+
+- 1 dominant background or neutral;
+- 1 primary accent;
+- optionally 1 secondary accent;
+- text neutrals.
+
+Prefer approximately 2–4 meaningful colors.
+
+Avoid generic blue-purple gradients unless the repository already has that identity.
+
+When the project has an existing design system, derive colors from it.
+
+Otherwise select a palette appropriate to the project's character and keep it consistent across the SVG, badges where practical, and supporting assets.
+
+### Typography
+
+Treat typography as part of the identity.
+
+Prefer a strong wordmark treatment with:
+
+- clear hierarchy;
+- deliberate spacing;
+- restrained font weight;
+- good contrast.
+
+Do not make every project look like a developer dashboard.
+
+Monospace fonts may be used for small technical labels, but should not automatically become the primary visual identity.
+
+Prefer system-safe SVG font stacks unless text has been converted to vector paths.
+
+### Hero image
+
+The hero may combine:
+
+- the logo mark;
+- the project wordmark;
+- subtle graphical motifs;
+- one short tagline.
+
+It should not contain substantial documentation.
+
+Avoid putting feature lists, architecture stages or multiple technical labels into the hero.
+
+Preferred aspect ratio:
+
+```text
+approximately 3:1 to 4:1
 ```
 
-Use a meaningful `alt`.
+Recommended width:
 
-### When no suitable image exists
+```text
+960–1200 px
+```
 
-If the environment allows creation of repository assets, create a lightweight SVG hero.
+A hero should still look intentional when scaled down on GitHub.
 
-The hero should contain only:
+### Separate branding from explanation
 
-- project name;
-- optional short tagline;
-- simple geometric or technical visual elements.
+Technical architecture belongs later in:
 
-Do not create fake product screenshots.
+```md
+## 🧱 Architecture
+```
 
-Do not use unrelated stock images.
+The hero communicates identity.
 
-Do not hotlink random images from the internet.
+The architecture section communicates structure.
 
-Keep generated visual assets simple and maintainable.
+Do not merge these two responsibilities.
+
+### Asset structure
+
+When generating branding assets, prefer:
+
+```text
+docs/assets/
+├── logo.svg
+└── readme-hero.svg
+```
+
+`logo.svg` should contain the reusable project mark or wordmark.
+
+`readme-hero.svg` may use that identity in a wider GitHub-specific composition.
+
+Do not make the README hero the only representation of the logo.
+
+### Quality gate
+
+Before accepting a generated visual, ask:
+
+1. Would this still be recognizable without the project name?
+2. Does it look like a brand rather than a diagram?
+3. Could the mark reasonably be reused as an app icon, website mark or documentation logo?
+4. Is there one clear visual idea?
+5. Does it avoid generic developer-tool aesthetics?
+6. Does it still work at small size?
+7. Is the SVG simple enough to maintain?
+
+If several answers are no, redesign it before updating the README.
 
 ---
 
